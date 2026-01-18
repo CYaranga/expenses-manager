@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/schemas/wrangler.json",
+  "name": "expenses-manager",
+  "main": "./api/src/index.ts",
+  "compatibility_date": "2025-10-12",
+
+  // Static assets configuration
+  "assets": {
+    "directory": "./web/dist",
+    "not_found_handling": "single-page-application"
+  },
+
+  // Route configuration for the domain
+  "routes": [
+    {
+      "pattern": "chrisyaranga.dev/expenses-manager/*",
+      "zone_name": "chrisyaranga.dev"
+    }
+  ],
+
+  // D1 database binding
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "expenses_db",
+      "database_id": "246b8b03-accf-4cf8-af99-e208c29c8eef"
+    }
+  ],
+
+  // Environment variables (secrets should be set via wrangler secret)
+  "vars": {
+    "ENVIRONMENT": "production"
+  }
+}

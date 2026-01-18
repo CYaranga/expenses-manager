@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars and fill in your secrets
+# Do not commit .dev.vars to version control
+
+# JWT secret for signing tokens (generate a random 32+ character string)
+JWT_SECRET=your-super-secret-jwt-key-here-change-this

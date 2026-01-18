@@ -1,0 +1,28 @@
+{
+  "name": "expenses-manager",
+  "private": true,
+  "workspaces": [
+    "api",
+    "web",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"bun run dev:api\" \"bun run dev:web\"",
+    "dev:api": "cd api && bun run dev",
+    "dev:web": "cd web && bun run dev",
+    "build": "bun run build:web && bun run sync-spa && bun run build:api",
+    "sync-spa": "bun scripts/sync-spa-html.ts",
+    "build:api": "cd api && bun run build",
+    "build:web": "cd web && bun run build",
+    "deploy": "bun run build && wrangler deploy",
+    "db:migrate": "wrangler d1 migrations apply expenses_db --local",
+    "db:migrate:prod": "wrangler d1 migrations apply expenses_db --remote",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241106.0",
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^4.61.0"
+  }
+}
