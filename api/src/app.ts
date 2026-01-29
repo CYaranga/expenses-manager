@@ -15,8 +15,8 @@ const spaHtml = `<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="/expenses-manager/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expenses Manager</title>
-    <script type="module" crossorigin src="/expenses-manager/assets/index-B8EdRxYQ.js"></script>
-    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-CrXtZk-k.css">
+    <script type="module" crossorigin src="/expenses-manager/assets/index-ClzJ6QKe.js"></script>
+    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-Xe3TGcVq.css">
   </head>
   <body>
     <div id="root"></div>

@@ -28,7 +28,7 @@ export default function RegisterPage() {
         family_name: familyAction === 'create' ? familyName : undefined,
         invite_code: familyAction === 'join' ? inviteCode : undefined,
       });
-      navigate('/');
+      navigate('/dashboard');
     } catch {
       // Error is handled by the store
     }

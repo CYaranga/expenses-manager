@@ -112,7 +112,7 @@ export default function FamilyPage() {
     try {
       await leaveFamily.mutateAsync();
       await checkAuth();
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to leave family');
     }

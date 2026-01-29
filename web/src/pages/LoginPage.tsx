@@ -14,7 +14,7 @@ export default function LoginPage() {
 
     try {
       await login({ email, password });
-      navigate('/');
+      navigate('/dashboard');
     } catch {
       // Error is handled by the store
     }

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/auth.store';
 import { useEffect } from 'react';
 import Layout from './components/Layout';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -28,7 +29,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-function PublicRoute({ children }: { children: React.ReactNode }) {
+function PublicOnlyRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
@@ -40,10 +41,28 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;
+}
+
+function HomeRoute() {
+  const { isAuthenticated, isLoading } = useAuthStore();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <HomePage />;
 }
 
 export default function App() {
@@ -55,24 +74,30 @@ export default function App() {
 
   return (
     <Routes>
+      {/* Public home page */}
+      <Route path="/" element={<HomeRoute />} />
+
+      {/* Auth routes - redirect to dashboard if logged in */}
       <Route
         path="/login"
         element={
-          <PublicRoute>
+          <PublicOnlyRoute>
             <LoginPage />
-          </PublicRoute>
+          </PublicOnlyRoute>
         }
       />
       <Route
         path="/register"
         element={
-          <PublicRoute>
+          <PublicOnlyRoute>
             <RegisterPage />
-          </PublicRoute>
+          </PublicOnlyRoute>
         }
       />
+
+      {/* Protected app routes */}
       <Route
-        path="/"
+        path="/dashboard"
         element={
           <ProtectedRoute>
             <Layout />
@@ -80,12 +105,44 @@ export default function App() {
         }
       >
         <Route index element={<DashboardPage />} />
-        <Route path="expenses" element={<ExpensesPage />} />
-        <Route path="expenses/new" element={<AddExpensePage />} />
-        <Route path="expenses/:id/edit" element={<AddExpensePage />} />
-        <Route path="family" element={<FamilyPage />} />
-        <Route path="settings" element={<SettingsPage />} />
       </Route>
+
+      <Route
+        path="/expenses"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<ExpensesPage />} />
+        <Route path="new" element={<AddExpensePage />} />
+        <Route path=":id/edit" element={<AddExpensePage />} />
+      </Route>
+
+      <Route
+        path="/family"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<FamilyPage />} />
+      </Route>
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<SettingsPage />} />
+      </Route>
+
+      {/* Catch all - redirect to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

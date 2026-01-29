@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__cloudflare__workers_list",
+      "mcp__cloudflare__d1_databases_list",
+      "mcp__context7__resolve-library-id",
+      "Bash(ls:*)",
+      "mcp__context7__query-docs",
+      "WebSearch",
+      "WebFetch(domain:developers.cloudflare.com)",
+      "Bash(bun install:*)",
+      "Bash(wrangler d1 migrations apply:*)",
+      "Bash(bunx tsc:*)",
+      "Bash(timeout 15 bun run dev:*)",
+      "Bash(bun run build:web:*)",
+      "Bash(timeout 20 bun run:*)",
+      "Bash(curl:*)",
+      "Bash(openssl rand:*)",
+      "Bash(wrangler secret:*)",
+      "Bash(bun run:*)",
+      "Bash(wrangler d1 execute:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit --date=\"2026-01-18T10:00:00\" -m \"$\\(cat <<''EOF''\nInitial project setup with monorepo structure\n\n- Set up Bun workspaces for api, web, and shared packages\n- Configure Cloudflare Workers with wrangler.jsonc\n- Add TypeScript configurations for all packages\n- Set up Vite with React and Tailwind CSS\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
