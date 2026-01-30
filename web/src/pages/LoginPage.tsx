@@ -1,129 +1,119 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/auth.store';
+import { useTranslation } from '../hooks/useTranslation';
 import ThemeToggle from '../components/ThemeToggle';
+import LanguageToggle from '../components/LanguageToggle';
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize: (config: {
+            client_id: string;
+            callback: (response: { credential: string }) => void;
+            auto_select?: boolean;
+          }) => void;
+          renderButton: (
+            element: HTMLElement,
+            config: {
+              theme?: string;
+              size?: string;
+              width?: number;
+              text?: string;
+              shape?: string;
+            }
+          ) => void;
+        };
+      };
+    };
+  }
+}
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const { googleSignIn, error, clearError } = useAuthStore();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleGoogleResponse = useCallback(async (response: { credential: string }) => {
     clearError();
-
     try {
-      await login({ email, password });
-      navigate('/dashboard');
+      await googleSignIn(response.credential);
+      navigate('/');
     } catch {
       // Error is handled by the store
     }
-  };
+  }, [googleSignIn, navigate, clearError]);
+
+  useEffect(() => {
+    if (initializedRef.current) return;
+
+    function tryInit() {
+      if (window.google && buttonRef.current) {
+        initializedRef.current = true;
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: handleGoogleResponse,
+        });
+        window.google.accounts.id.renderButton(buttonRef.current, {
+          theme: 'outline',
+          size: 'large',
+          width: 300,
+          text: 'signin_with',
+          shape: 'rectangular',
+        });
+      }
+    }
+
+    tryInit();
+
+    // If Google script hasn't loaded yet, retry
+    if (!window.google) {
+      const interval = setInterval(() => {
+        if (window.google) {
+          clearInterval(interval);
+          tryInit();
+        }
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [handleGoogleResponse]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cream-100 dark:bg-primary-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        <LanguageToggle />
         <ThemeToggle />
       </div>
-      <div className="max-w-md w-full space-y-6 sm:space-y-8">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8 text-center">
         <div>
           <div className="flex justify-center mb-4">
             <div className="w-12 h-12 bg-primary-700 dark:bg-accent-400 rounded-xl flex items-center justify-center">
               <span className="text-accent-400 dark:text-primary-900 font-bold text-2xl">$</span>
             </div>
           </div>
-          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-700 dark:text-cream-100">
-            Expenses Manager
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary-700 dark:text-cream-100">
+            {t('appName')}
           </h1>
-          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-primary-700 dark:text-cream-100">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-primary-500 dark:text-cream-300">
-            Or{' '}
-            <Link
-              to="/register"
-              className="font-medium text-accent-500 hover:text-accent-600"
-            >
-              create a new account
-            </Link>
+          <p className="mt-2 text-sm text-primary-500 dark:text-cream-300">
+            {t('appSubtitle')}
           </p>
         </div>
 
-        <form className="mt-6 sm:mt-8 space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-              <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
-            </div>
-          )}
-
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="label">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input"
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="label">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input"
-                placeholder="Enter your password"
-              />
-            </div>
+        {error && (
+          <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+            <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
           </div>
+        )}
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="btn-accent w-full py-3"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                Signing in...
-              </span>
-            ) : (
-              'Sign in'
-            )}
-          </button>
-        </form>
+        <div className="flex justify-center">
+          <div ref={buttonRef} />
+        </div>
       </div>
     </div>
   );

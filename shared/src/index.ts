@@ -4,7 +4,8 @@ export type UserRole = 'admin' | 'member';
 export interface User {
   id: string;
   email: string;
-  password_hash: string;
+  password_hash: string | null;
+  google_id: string | null;
   display_name: string | null;
   avatar_url: string | null;
   family_id: string | null;
@@ -45,6 +46,9 @@ export interface FamilyMember {
   created_at: string;
 }
 
+// Transaction type
+export type TransactionType = 'expense' | 'income';
+
 // Expense types
 export interface Expense {
   id: string;
@@ -53,6 +57,7 @@ export interface Expense {
   amount: number;
   name: string;
   category: string;
+  type: TransactionType;
   place: string | null;
   photo: string | null;
   purchase_date: string;
@@ -65,19 +70,19 @@ export interface ExpenseWithUser extends Expense {
   user_email: string;
 }
 
-export interface ExpenseSummary {
-  total_amount: number;
-  expense_count: number;
-  category_breakdown: {
-    category: string;
-    total: number;
-    count: number;
-  }[];
-  monthly_totals: {
-    month: string;
-    total: number;
-  }[];
-  recent_expenses: ExpenseWithUser[];
+export interface DailyTotal {
+  date: string;
+  total: number;
+}
+
+// Period summary for dashboard
+export interface PeriodSummary {
+  total_expenses: number;
+  total_income: number;
+  net_balance: number;
+  top_category: string | null;
+  top_category_amount: number;
+  transaction_count: number;
 }
 
 // Auth types
@@ -95,21 +100,11 @@ export interface RefreshToken {
   created_at: string;
 }
 
+export interface GoogleSignInRequest {
+  credential: string;
+}
+
 // API Request/Response types
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  display_name?: string;
-  family_action: 'create' | 'join';
-  family_name?: string;
-  invite_code?: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
 export interface CreateFamilyRequest {
   name: string;
   description?: string;
@@ -130,6 +125,7 @@ export interface CreateExpenseRequest {
   amount: number;
   name: string;
   category: string;
+  type?: TransactionType;
   place?: string;
   photo?: string;
   purchase_date: string;
@@ -139,6 +135,7 @@ export interface UpdateExpenseRequest {
   amount?: number;
   name?: string;
   category?: string;
+  type?: TransactionType;
   place?: string | null;
   photo?: string | null;
   purchase_date?: string;
@@ -146,6 +143,7 @@ export interface UpdateExpenseRequest {
 
 export interface ExpenseFilters {
   category?: string;
+  type?: TransactionType;
   user_id?: string;
   start_date?: string;
   end_date?: string;
@@ -179,3 +177,20 @@ export const DEFAULT_CATEGORIES = [
 ] as const;
 
 export type ExpenseCategory = (typeof DEFAULT_CATEGORIES)[number];
+
+// Default income categories
+export const DEFAULT_INCOME_CATEGORIES = [
+  'Salary',
+  'Freelance',
+  'Investments',
+  'Rental Income',
+  'Business',
+  'Gifts Received',
+  'Refunds',
+  'Other Income'
+] as const;
+
+export type IncomeCategory = (typeof DEFAULT_INCOME_CATEGORIES)[number];
+
+// Logger types
+export * from './logger-types';

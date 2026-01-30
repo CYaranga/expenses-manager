@@ -15,6 +15,7 @@ const spaHtml = `<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="/expenses-manager/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expenses Manager</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
       // Prevent flash of wrong theme
       (function() {
@@ -29,8 +30,8 @@ const spaHtml = `<!DOCTYPE html>
         } catch (e) {}
       })();
     </script>
-    <script type="module" crossorigin src="/expenses-manager/assets/index-DZDeMAMR.js"></script>
-    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-D8ZtzgNG.css">
+    <script type="module" crossorigin src="/expenses-manager/assets/index-B59wwHzv.js"></script>
+    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-By94SSFN.css">
   </head>
   <body>
     <div id="root"></div>
