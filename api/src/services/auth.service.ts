@@ -1,129 +1,91 @@
-import type { User, AuthTokens, RegisterRequest } from '../../../shared/src';
+import type { User, AuthTokens } from '../../../shared/src';
 import type { Env } from '../types';
 import {
-  hashPassword,
-  verifyPassword,
   generateAccessToken,
   generateRefreshToken,
   hashToken,
   getRefreshTokenExpiry,
   generateId,
   getCurrentTimestamp,
+  verifyGoogleToken,
 } from '../utils';
-import { generateInviteCode } from '../utils/invite-code';
 
 export class AuthService {
-  constructor(private db: D1Database, private jwtSecret: string) {}
+  constructor(
+    private db: D1Database,
+    private jwtSecret: string,
+    private googleClientId: string
+  ) {}
 
-  async register(data: RegisterRequest): Promise<{ user: User; tokens: AuthTokens }> {
-    const { email, password, display_name, family_action, family_name, invite_code } = data;
+  async googleSignIn(credential: string): Promise<{ user: User; tokens: AuthTokens }> {
+    const googlePayload = await verifyGoogleToken(credential, this.googleClientId);
 
-    // Check if user exists
-    const existingUser = await this.db
-      .prepare('SELECT id FROM users WHERE email = ?')
-      .bind(email.toLowerCase())
-      .first();
+    // Try to find existing user by google_id
+    let user = await this.db
+      .prepare('SELECT * FROM users WHERE google_id = ?')
+      .bind(googlePayload.sub)
+      .first<User>();
 
-    if (existingUser) {
-      throw new Error('Email already registered');
-    }
+    if (!user) {
+      // Try to find by email (for migrating existing email/password users)
+      user = await this.db
+        .prepare('SELECT * FROM users WHERE email = ?')
+        .bind(googlePayload.email.toLowerCase())
+        .first<User>();
 
-    const userId = generateId();
-    const passwordHash = await hashPassword(password);
-    const timestamp = getCurrentTimestamp();
-    let familyId: string | null = null;
-    let userRole: 'admin' | 'member' = 'member';
+      if (user) {
+        // Link Google account to existing user
+        const timestamp = getCurrentTimestamp();
+        await this.db
+          .prepare('UPDATE users SET google_id = ?, avatar_url = COALESCE(avatar_url, ?), display_name = COALESCE(display_name, ?), updated_at = ?, last_login_at = ? WHERE id = ?')
+          .bind(googlePayload.sub, googlePayload.picture || null, googlePayload.name || null, timestamp, timestamp, user.id)
+          .run();
 
-    if (family_action === 'create') {
-      if (!family_name) {
-        throw new Error('Family name is required when creating a family');
+        user = await this.db
+          .prepare('SELECT * FROM users WHERE id = ?')
+          .bind(user.id)
+          .first<User>();
+      } else {
+        // Create new user
+        const userId = generateId();
+        const timestamp = getCurrentTimestamp();
+
+        await this.db
+          .prepare(
+            `INSERT INTO users (id, email, google_id, display_name, avatar_url, role, created_at, updated_at, last_login_at)
+             VALUES (?, ?, ?, ?, ?, 'member', ?, ?, ?)`
+          )
+          .bind(
+            userId,
+            googlePayload.email.toLowerCase(),
+            googlePayload.sub,
+            googlePayload.name || null,
+            googlePayload.picture || null,
+            timestamp,
+            timestamp,
+            timestamp
+          )
+          .run();
+
+        user = await this.db
+          .prepare('SELECT * FROM users WHERE id = ?')
+          .bind(userId)
+          .first<User>();
       }
-
-      familyId = generateId();
-      userRole = 'admin';
-      const newInviteCode = generateInviteCode();
-
+    } else {
+      // Update last login
+      const timestamp = getCurrentTimestamp();
       await this.db
-        .prepare(
-          `INSERT INTO families (id, name, invite_code, admin_id, currency, created_at, updated_at)
-           VALUES (?, ?, ?, ?, 'USD', ?, ?)`
-        )
-        .bind(familyId, family_name, newInviteCode, userId, timestamp, timestamp)
+        .prepare('UPDATE users SET last_login_at = ?, avatar_url = COALESCE(avatar_url, ?), updated_at = ? WHERE id = ?')
+        .bind(timestamp, googlePayload.picture || null, timestamp, user.id)
         .run();
-    } else if (family_action === 'join') {
-      if (!invite_code) {
-        throw new Error('Invite code is required when joining a family');
-      }
-
-      const family = await this.db
-        .prepare('SELECT id FROM families WHERE invite_code = ?')
-        .bind(invite_code.toUpperCase())
-        .first<{ id: string }>();
-
-      if (!family) {
-        throw new Error('Invalid invite code');
-      }
-
-      familyId = family.id;
     }
 
-    // Create user
-    await this.db
-      .prepare(
-        `INSERT INTO users (id, email, password_hash, display_name, family_id, role, created_at, updated_at, last_login_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      )
-      .bind(
-        userId,
-        email.toLowerCase(),
-        passwordHash,
-        display_name || null,
-        familyId,
-        userRole,
-        timestamp,
-        timestamp,
-        timestamp
-      )
-      .run();
-
-    const user = await this.db
-      .prepare('SELECT * FROM users WHERE id = ?')
-      .bind(userId)
-      .first<User>();
-
     if (!user) {
-      throw new Error('Failed to create user');
+      throw new Error('Failed to create or find user');
     }
 
     const tokens = await this.generateTokens(user);
-
-    return { user, tokens };
-  }
-
-  async login(email: string, password: string): Promise<{ user: User; tokens: AuthTokens }> {
-    const user = await this.db
-      .prepare('SELECT * FROM users WHERE email = ?')
-      .bind(email.toLowerCase())
-      .first<User>();
-
-    if (!user) {
-      throw new Error('Invalid email or password');
-    }
-
-    const isValid = await verifyPassword(password, user.password_hash);
-
-    if (!isValid) {
-      throw new Error('Invalid email or password');
-    }
-
-    // Update last login
-    await this.db
-      .prepare('UPDATE users SET last_login_at = ? WHERE id = ?')
-      .bind(getCurrentTimestamp(), user.id)
-      .run();
-
-    const tokens = await this.generateTokens(user);
-
     return { user, tokens };
   }
 
@@ -192,7 +154,7 @@ export class AuthService {
     return {
       access_token: accessToken,
       refresh_token: refreshToken,
-      expires_in: 900, // 15 minutes in seconds
+      expires_in: 900,
     };
   }
 }
