@@ -21,20 +21,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-cream-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-600">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 bg-primary-700 rounded-xl flex items-center justify-center">
+              <span className="text-accent-400 font-bold text-2xl">$</span>
+            </div>
+          </div>
+          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-700">
             Expenses Manager
           </h1>
-          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-gray-900">
+          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-primary-700">
             Sign in to your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-primary-500">
             Or{' '}
             <Link
               to="/register"
-              className="font-medium text-primary-600 hover:text-primary-500"
+              className="font-medium text-accent-500 hover:text-accent-600"
             >
               create a new account
             </Link>

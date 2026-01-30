@@ -96,7 +96,7 @@ export default function AddExpensePage() {
       {/* Back button for mobile */}
       <button
         onClick={() => navigate('/expenses')}
-        className="sm:hidden flex items-center text-gray-600 mb-4 -ml-1"
+        className="sm:hidden flex items-center text-primary-500 mb-4 -ml-1"
       >
         <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -104,7 +104,7 @@ export default function AddExpensePage() {
         Back
       </button>
 
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-primary-700 mb-4 sm:mb-6">
         {isEditing ? 'Edit Expense' : 'Add New Expense'}
       </h1>
 
@@ -137,7 +137,7 @@ export default function AddExpensePage() {
               Amount *
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400">
                 $
               </span>
               <input

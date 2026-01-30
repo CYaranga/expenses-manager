@@ -129,7 +129,7 @@ export default function FamilyPage() {
   if (!hasFamily) {
     return (
       <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Family Setup</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Family Setup</h1>
 
         {error && (
           <div className="rounded-md bg-red-50 p-4">
@@ -140,10 +140,10 @@ export default function FamilyPage() {
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {/* Create family card */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            <h2 className="text-lg font-semibold text-primary-700 mb-2">
               Create a Family
             </h2>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-primary-500 text-sm mb-4">
               Start a new family and invite others to join.
             </p>
             {showCreateForm ? (
@@ -198,10 +198,10 @@ export default function FamilyPage() {
 
           {/* Join family card */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            <h2 className="text-lg font-semibold text-primary-700 mb-2">
               Join a Family
             </h2>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-primary-500 text-sm mb-4">
               Enter an invite code to join an existing family.
             </p>
             {showJoinForm ? (
@@ -271,7 +271,7 @@ export default function FamilyPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Family</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Family</h1>
         {isAdmin && (
           <button
             onClick={() => {
@@ -340,17 +340,17 @@ export default function FamilyPage() {
 
       {/* Family info */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+        <h2 className="text-lg font-semibold text-primary-700 mb-2">
           {family?.name}
         </h2>
         {family?.description && (
-          <p className="text-gray-600 mb-4">{family.description}</p>
+          <p className="text-primary-500 mb-4">{family.description}</p>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-gray-50 rounded-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-cream-100 rounded-lg">
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-sm text-gray-500">Invite Code</p>
-            <p className="font-mono text-xl sm:text-2xl font-bold tracking-wider">
+            <p className="text-sm text-primary-500">Invite Code</p>
+            <p className="font-mono text-xl sm:text-2xl font-bold tracking-wider text-primary-700">
               {family?.invite_code}
             </p>
           </div>
@@ -373,36 +373,36 @@ export default function FamilyPage() {
 
       {/* Members */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-primary-700 mb-4">
           Members ({members.length})
         </h2>
-        <div className="divide-y divide-gray-100 -mx-4 sm:-mx-6 px-4 sm:px-6">
+        <div className="divide-y divide-cream-200 -mx-4 sm:-mx-6 px-4 sm:px-6">
           {members.map((member) => (
             <div
               key={member.id}
               className="py-4 flex items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-primary-700 font-medium">
+                <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-accent-600 font-medium">
                     {member.display_name?.[0] || member.email[0].toUpperCase()}
                   </span>
                 </div>
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 truncate">
+                  <p className="font-medium text-primary-700 truncate">
                     {member.display_name || member.email.split('@')[0]}
                     {member.id === user?.id && (
-                      <span className="text-gray-500 text-sm ml-1">(you)</span>
+                      <span className="text-primary-400 text-sm ml-1">(you)</span>
                     )}
                   </p>
-                  <p className="text-sm text-gray-500 truncate">{member.email}</p>
+                  <p className="text-sm text-primary-500 truncate">{member.email}</p>
                 </div>
               </div>
               <span
                 className={`px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
                   member.role === 'admin'
-                    ? 'bg-primary-100 text-primary-700'
-                    : 'bg-gray-100 text-gray-700'
+                    ? 'bg-accent-100 text-accent-700'
+                    : 'bg-cream-200 text-primary-600'
                 }`}
               >
                 {member.role}
@@ -415,7 +415,7 @@ export default function FamilyPage() {
       {/* Leave family */}
       <div className="card border-red-200">
         <h2 className="text-lg font-semibold text-red-600 mb-2">Danger Zone</h2>
-        <p className="text-gray-600 text-sm mb-4">
+        <p className="text-primary-500 text-sm mb-4">
           {isAdmin
             ? 'As the admin, leaving will delete the family if you are the only member.'
             : 'Leave this family to join or create another one.'}

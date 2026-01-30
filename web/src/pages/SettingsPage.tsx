@@ -23,11 +23,11 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Settings</h1>
+      <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Settings</h1>
 
       {/* Profile section */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Profile</h2>
+        <h2 className="text-lg font-semibold text-primary-700 mb-4">Profile</h2>
 
         {message && (
           <div
@@ -52,9 +52,9 @@ export default function SettingsPage() {
               type="email"
               value={user?.email || ''}
               disabled
-              className="input bg-gray-50 text-gray-500"
+              className="input bg-cream-100 text-primary-400"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-primary-400 mt-1">
               Email cannot be changed
             </p>
           </div>
@@ -76,7 +76,7 @@ export default function SettingsPage() {
               type="text"
               value={user?.role || 'member'}
               disabled
-              className="input bg-gray-50 text-gray-500 capitalize"
+              className="input bg-cream-100 text-primary-400 capitalize"
             />
           </div>
 
@@ -92,13 +92,13 @@ export default function SettingsPage() {
 
       {/* Account info */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-primary-700 mb-4">
           Account Information
         </h2>
         <dl className="space-y-4">
           <div>
-            <dt className="text-sm text-gray-500">Account created</dt>
-            <dd className="text-gray-900">
+            <dt className="text-sm text-primary-500">Account created</dt>
+            <dd className="text-primary-700">
               {user?.created_at
                 ? new Date(user.created_at).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -109,18 +109,18 @@ export default function SettingsPage() {
             </dd>
           </div>
           <div>
-            <dt className="text-sm text-gray-500">User ID</dt>
-            <dd className="text-gray-900 font-mono text-xs sm:text-sm break-all">{user?.id}</dd>
+            <dt className="text-sm text-primary-500">User ID</dt>
+            <dd className="text-primary-700 font-mono text-xs sm:text-sm break-all">{user?.id}</dd>
           </div>
         </dl>
       </div>
 
       {/* Password change section */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <h2 className="text-lg font-semibold text-primary-700 mb-4">
           Change Password
         </h2>
-        <p className="text-gray-600 text-sm mb-4">
+        <p className="text-primary-500 text-sm mb-4">
           Password change feature coming soon.
         </p>
         <button disabled className="btn-secondary opacity-50 cursor-not-allowed">
@@ -129,15 +129,15 @@ export default function SettingsPage() {
       </div>
 
       {/* App info */}
-      <div className="card bg-gray-50">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+      <div className="card bg-cream-100">
+        <h2 className="text-lg font-semibold text-primary-700 mb-2">
           About Expenses Manager
         </h2>
-        <p className="text-gray-600 text-sm">
+        <p className="text-primary-500 text-sm">
           A family expense tracking application built with React, Hono, and
           Cloudflare Workers.
         </p>
-        <p className="text-gray-500 text-xs mt-4">Version 1.0.0</p>
+        <p className="text-primary-400 text-xs mt-4">Version 1.0.0</p>
       </div>
     </div>
   );

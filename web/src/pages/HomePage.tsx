@@ -35,27 +35,27 @@ const features = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-cream-100 to-cream-200">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream-100/80 backdrop-blur-md border-b border-cream-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">$</span>
+              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 font-bold text-lg">$</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">Expenses Manager</span>
+              <span className="ml-2 text-xl font-bold text-primary-700">Expenses Manager</span>
             </div>
             <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="text-gray-600 hover:text-gray-900 font-medium px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="text-primary-600 hover:text-primary-700 font-medium px-3 py-2 rounded-lg hover:bg-cream-200 transition-colors"
               >
                 Sign in
               </Link>
               <Link
                 to="/register"
-                className="bg-primary-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                className="bg-accent-400 text-primary-800 font-medium px-4 py-2 rounded-lg hover:bg-accent-500 transition-colors"
               >
                 Get Started
               </Link>
@@ -67,18 +67,18 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-700 leading-tight">
             Track Family Expenses
-            <span className="block text-primary-600">Together, Effortlessly</span>
+            <span className="block text-primary-500">Together, Effortlessly</span>
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg sm:text-xl text-primary-600 max-w-2xl mx-auto">
             A simple, beautiful way to manage your family's finances. Add expenses,
             see where your money goes, and make smarter spending decisions together.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/register"
-              className="inline-flex items-center justify-center bg-primary-600 text-white font-semibold px-8 py-4 rounded-xl hover:bg-primary-700 transition-colors text-lg shadow-lg shadow-primary-600/25"
+              className="inline-flex items-center justify-center bg-accent-400 text-primary-800 font-semibold px-8 py-4 rounded-xl hover:bg-accent-500 transition-colors text-lg shadow-lg shadow-accent-400/25"
             >
               Start for Free
               <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@ export default function HomePage() {
             </Link>
             <a
               href="#features"
-              className="inline-flex items-center justify-center bg-white text-gray-700 font-semibold px-8 py-4 rounded-xl hover:bg-gray-50 transition-colors text-lg border border-gray-200"
+              className="inline-flex items-center justify-center bg-white text-primary-700 font-semibold px-8 py-4 rounded-xl hover:bg-cream-50 transition-colors text-lg border border-cream-300"
             >
               Learn More
             </a>
@@ -98,41 +98,52 @@ export default function HomePage() {
       {/* App Preview */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
-            <div className="bg-gray-100 px-4 py-3 flex items-center gap-2">
+          <div className="bg-white rounded-2xl shadow-2xl shadow-primary-700/10 border border-cream-300 overflow-hidden">
+            <div className="bg-primary-700 px-4 py-3 flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-400"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <div className="w-3 h-3 rounded-full bg-accent-400"></div>
               <div className="w-3 h-3 rounded-full bg-green-400"></div>
             </div>
-            <div className="p-6 sm:p-8 bg-gray-50">
+            <div className="p-6 sm:p-8 bg-cream-100">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <div className="bg-white p-4 rounded-xl shadow-sm">
-                  <p className="text-sm text-gray-500">Total Expenses</p>
-                  <p className="text-2xl font-bold text-gray-900">$4,285.50</p>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
+                  <p className="text-sm text-primary-500">Total Expenses</p>
+                  <p className="text-2xl font-bold text-primary-700">$4,285.50</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm">
-                  <p className="text-sm text-gray-500">This Month</p>
-                  <p className="text-2xl font-bold text-gray-900">$1,234.00</p>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
+                  <p className="text-sm text-primary-500">This Month</p>
+                  <p className="text-2xl font-bold text-primary-700">$1,234.00</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm">
-                  <p className="text-sm text-gray-500">Top Category</p>
-                  <p className="text-2xl font-bold text-gray-900">Groceries</p>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
+                  <p className="text-sm text-primary-500">Top Category</p>
+                  <p className="text-2xl font-bold text-primary-700">Groceries</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white p-4 rounded-xl shadow-sm h-40 flex items-center justify-center">
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200 h-40 flex items-center justify-center">
                   <div className="flex gap-1 items-end h-24">
                     {[40, 65, 45, 80, 55, 70, 90].map((h, i) => (
                       <div
                         key={i}
-                        className="w-6 sm:w-8 bg-primary-500 rounded-t"
-                        style={{ height: `${h}%` }}
+                        className="w-6 sm:w-8 rounded-t"
+                        style={{
+                          height: `${h}%`,
+                          backgroundColor: i === 6 ? '#FAB95B' : '#547792'
+                        }}
                       ></div>
                     ))}
                   </div>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm h-40 flex items-center justify-center">
-                  <div className="w-24 h-24 rounded-full border-8 border-primary-500 border-t-blue-500 border-r-yellow-500 border-b-red-500"></div>
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200 h-40 flex items-center justify-center">
+                  <div
+                    className="w-24 h-24 rounded-full border-8"
+                    style={{
+                      borderTopColor: '#1A3263',
+                      borderRightColor: '#547792',
+                      borderBottomColor: '#FAB95B',
+                      borderLeftColor: '#E8E2DB',
+                    }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -144,10 +155,10 @@ export default function HomePage() {
       <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700">
               Everything you need to manage expenses
             </h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-primary-500 max-w-2xl mx-auto">
               Simple yet powerful features designed for families who want to take control of their finances.
             </p>
           </div>
@@ -156,11 +167,11 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-primary-200 hover:shadow-lg transition-all duration-300"
+                className="bg-white p-6 rounded-2xl border border-cream-300 hover:border-accent-400 hover:shadow-lg transition-all duration-300"
               >
                 <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
                   <svg
-                    className="w-6 h-6 text-primary-600"
+                    className="w-6 h-6 text-primary-700"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -173,10 +184,10 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-primary-700 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <p className="text-primary-500">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -184,13 +195,13 @@ export default function HomePage() {
       </section>
 
       {/* How it Works */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700">
               Get started in minutes
             </h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <p className="mt-4 text-lg text-primary-500">
               Three simple steps to take control of your family finances
             </p>
           </div>
@@ -214,13 +225,13 @@ export default function HomePage() {
               },
             ].map((item, index) => (
               <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-primary-600 text-white rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                <div className="w-16 h-16 bg-accent-400 text-primary-800 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-primary-700 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-gray-600">{item.description}</p>
+                <p className="text-primary-500">{item.description}</p>
               </div>
             ))}
           </div>
@@ -230,10 +241,10 @@ export default function HomePage() {
       {/* Tech Stack */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary-700 mb-4">
             Built with modern technology
           </h2>
-          <p className="text-gray-600 mb-8">
+          <p className="text-primary-500 mb-8">
             Powered by cutting-edge tools for the best performance and developer experience
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -241,7 +252,7 @@ export default function HomePage() {
               (tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
+                  className="px-4 py-2 bg-white text-primary-600 rounded-full text-sm font-medium border border-cream-300"
                 >
                   {tech}
                 </span>
@@ -254,16 +265,16 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-primary-600 rounded-3xl p-8 sm:p-12 text-center">
+          <div className="bg-primary-700 rounded-3xl p-8 sm:p-12 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Ready to take control of your finances?
             </h2>
-            <p className="text-primary-100 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-primary-200 text-lg mb-8 max-w-2xl mx-auto">
               Join families who are already using Expenses Manager to track their spending and save more money.
             </p>
             <Link
               to="/register"
-              className="inline-flex items-center justify-center bg-white text-primary-600 font-semibold px-8 py-4 rounded-xl hover:bg-primary-50 transition-colors text-lg"
+              className="inline-flex items-center justify-center bg-accent-400 text-primary-800 font-semibold px-8 py-4 rounded-xl hover:bg-accent-500 transition-colors text-lg"
             >
               Get Started for Free
             </Link>
@@ -272,22 +283,22 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-100">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-cream-300 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">$</span>
+              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 font-bold text-lg">$</span>
               </div>
-              <span className="ml-2 text-lg font-bold text-gray-900">Expenses Manager</span>
+              <span className="ml-2 text-lg font-bold text-primary-700">Expenses Manager</span>
             </div>
-            <p className="text-gray-500 text-sm">
+            <p className="text-primary-500 text-sm">
               Built by Chris Yaranga. Open source on{' '}
               <a
                 href="https://github.com/CYaranga/expenses-manager"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-600 hover:underline"
+                className="text-accent-500 hover:underline"
               >
                 GitHub
               </a>

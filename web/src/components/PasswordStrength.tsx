@@ -20,8 +20,8 @@ function calculatePasswordStrength(password: string): StrengthResult {
     return {
       score: 0,
       label: '',
-      color: 'text-gray-400',
-      bgColor: 'bg-gray-200',
+      color: 'text-primary-400',
+      bgColor: 'bg-cream-300',
       suggestions: [],
     };
   }
@@ -64,8 +64,8 @@ function calculatePasswordStrength(password: string): StrengthResult {
   const levels: { label: string; color: string; bgColor: string }[] = [
     { label: 'Very weak', color: 'text-red-600', bgColor: 'bg-red-500' },
     { label: 'Weak', color: 'text-orange-600', bgColor: 'bg-orange-500' },
-    { label: 'Fair', color: 'text-yellow-600', bgColor: 'bg-yellow-500' },
-    { label: 'Good', color: 'text-lime-600', bgColor: 'bg-lime-500' },
+    { label: 'Fair', color: 'text-accent-500', bgColor: 'bg-accent-400' },
+    { label: 'Good', color: 'text-primary-500', bgColor: 'bg-primary-500' },
     { label: 'Strong', color: 'text-green-600', bgColor: 'bg-green-500' },
   ];
 
@@ -93,7 +93,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
           <div
             key={level}
             className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
-              level <= strength.score ? strength.bgColor : 'bg-gray-200'
+              level <= strength.score ? strength.bgColor : 'bg-cream-300'
             }`}
           />
         ))}
@@ -105,7 +105,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
           {strength.label}
         </span>
         {strength.suggestions.length > 0 && (
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-primary-400">
             {strength.suggestions[0]}
           </span>
         )}

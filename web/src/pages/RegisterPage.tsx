@@ -35,20 +35,25 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-cream-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div>
-          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-600">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 bg-primary-700 rounded-xl flex items-center justify-center">
+              <span className="text-accent-400 font-bold text-2xl">$</span>
+            </div>
+          </div>
+          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-700">
             Expenses Manager
           </h1>
-          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-gray-900">
+          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-primary-700">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-primary-500">
             Already have an account?{' '}
             <Link
               to="/login"
-              className="font-medium text-primary-600 hover:text-primary-500"
+              className="font-medium text-accent-500 hover:text-accent-600"
             >
               Sign in
             </Link>
@@ -111,39 +116,39 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="border-t border-gray-200 pt-4">
+            <div className="border-t border-cream-300 pt-4">
               <label className="label">Family</label>
               <div className="mt-2 space-y-2">
-                <label className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                <label className="flex items-center p-3 border border-cream-300 rounded-lg cursor-pointer hover:bg-cream-50 transition-colors">
                   <input
                     type="radio"
                     name="familyAction"
                     value="create"
                     checked={familyAction === 'create'}
                     onChange={() => setFamilyAction('create')}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                    className="h-4 w-4 text-accent-500 focus:ring-accent-400"
                   />
                   <div className="ml-3">
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-primary-700">
                       Create a new family
                     </span>
-                    <p className="text-xs text-gray-500">Start fresh and invite others</p>
+                    <p className="text-xs text-primary-400">Start fresh and invite others</p>
                   </div>
                 </label>
-                <label className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                <label className="flex items-center p-3 border border-cream-300 rounded-lg cursor-pointer hover:bg-cream-50 transition-colors">
                   <input
                     type="radio"
                     name="familyAction"
                     value="join"
                     checked={familyAction === 'join'}
                     onChange={() => setFamilyAction('join')}
-                    className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                    className="h-4 w-4 text-accent-500 focus:ring-accent-400"
                   />
                   <div className="ml-3">
-                    <span className="text-sm font-medium text-gray-900">
+                    <span className="text-sm font-medium text-primary-700">
                       Join an existing family
                     </span>
-                    <p className="text-xs text-gray-500">Use an invite code</p>
+                    <p className="text-xs text-primary-400">Use an invite code</p>
                   </div>
                 </label>
               </div>

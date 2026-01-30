@@ -22,19 +22,19 @@ export default function Layout() {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cream-100">
       {/* Mobile header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-20 bg-white border-b border-gray-200 h-14 flex items-center px-4">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-20 bg-white border-b border-cream-300 h-14 flex items-center px-4">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="p-2 -ml-2 rounded-lg hover:bg-gray-100"
+          className="p-2 -ml-2 rounded-lg hover:bg-cream-200"
           aria-label="Open menu"
         >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-6 h-6 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span className="ml-3 text-lg font-bold text-primary-600">Expenses</span>
+        <span className="ml-3 text-lg font-bold text-primary-700">Expenses</span>
       </header>
 
       {/* Mobile sidebar overlay */}
@@ -48,7 +48,7 @@ export default function Layout() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200
+          fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-cream-300
           transform transition-transform duration-200 ease-in-out
           lg:transform-none lg:z-10
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -56,14 +56,19 @@ export default function Layout() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-14 lg:h-16 px-4 lg:px-6 border-b border-gray-200">
-            <span className="text-xl font-bold text-primary-600">Expenses</span>
+          <div className="flex items-center justify-between h-14 lg:h-16 px-4 lg:px-6 border-b border-cream-300">
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 font-bold text-lg">$</span>
+              </div>
+              <span className="ml-2 text-xl font-bold text-primary-700">Expenses</span>
+            </div>
             <button
               onClick={closeSidebar}
-              className="lg:hidden p-2 -mr-2 rounded-lg hover:bg-gray-100"
+              className="lg:hidden p-2 -mr-2 rounded-lg hover:bg-cream-200"
               aria-label="Close menu"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -80,8 +85,8 @@ export default function Layout() {
                 className={({ isActive }) =>
                   `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-primary-50 text-primary-700'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-primary-100 text-primary-700'
+                      : 'text-primary-600 hover:bg-cream-200'
                   }`
                 }
               >
@@ -104,23 +109,23 @@ export default function Layout() {
           </nav>
 
           {/* User section */}
-          <div className="p-3 lg:p-4 border-t border-gray-200">
+          <div className="p-3 lg:p-4 border-t border-cream-300">
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-primary-700 font-medium">
+              <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center flex-shrink-0">
+                <span className="text-accent-600 font-medium">
                   {user?.display_name?.[0] || user?.email[0].toUpperCase()}
                 </span>
               </div>
               <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-primary-700 truncate">
                   {user?.display_name || user?.email}
                 </p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                <p className="text-xs text-primary-500 truncate">{user?.email}</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="mt-3 w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              className="mt-3 w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-primary-700 bg-cream-200 rounded-lg hover:bg-cream-300 transition-colors"
             >
               <svg
                 className="w-4 h-4 mr-2"
