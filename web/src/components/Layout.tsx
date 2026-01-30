@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/auth.store';
+import ThemeToggle from './ThemeToggle';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
@@ -22,19 +23,22 @@ export default function Layout() {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-cream-100">
+    <div className="min-h-screen bg-cream-100 dark:bg-primary-900">
       {/* Mobile header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-20 bg-white border-b border-cream-300 h-14 flex items-center px-4">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-20 bg-white dark:bg-primary-800 border-b border-cream-300 dark:border-primary-700 h-14 flex items-center px-4">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="p-2 -ml-2 rounded-lg hover:bg-cream-200"
+          className="p-2 -ml-2 rounded-lg hover:bg-cream-200 dark:hover:bg-primary-700"
           aria-label="Open menu"
         >
-          <svg className="w-6 h-6 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-6 h-6 text-primary-700 dark:text-cream-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <span className="ml-3 text-lg font-bold text-primary-700">Expenses</span>
+        <span className="ml-3 text-lg font-bold text-primary-700 dark:text-cream-100">Expenses</span>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Mobile sidebar overlay */}
@@ -48,7 +52,7 @@ export default function Layout() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-cream-300
+          fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-primary-800 border-r border-cream-300 dark:border-primary-700
           transform transition-transform duration-200 ease-in-out
           lg:transform-none lg:z-10
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -56,22 +60,25 @@ export default function Layout() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-14 lg:h-16 px-4 lg:px-6 border-b border-cream-300">
+          <div className="flex items-center justify-between h-14 lg:h-16 px-4 lg:px-6 border-b border-cream-300 dark:border-primary-700">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-accent-400 font-bold text-lg">$</span>
+              <div className="w-8 h-8 bg-primary-700 dark:bg-accent-400 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 dark:text-primary-900 font-bold text-lg">$</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-primary-700">Expenses</span>
+              <span className="ml-2 text-xl font-bold text-primary-700 dark:text-cream-100">Expenses</span>
             </div>
-            <button
-              onClick={closeSidebar}
-              className="lg:hidden p-2 -mr-2 rounded-lg hover:bg-cream-200"
-              aria-label="Close menu"
-            >
-              <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-1">
+              <ThemeToggle className="hidden lg:block" />
+              <button
+                onClick={closeSidebar}
+                className="lg:hidden p-2 -mr-2 rounded-lg hover:bg-cream-200 dark:hover:bg-primary-700"
+                aria-label="Close menu"
+              >
+                <svg className="w-5 h-5 text-primary-600 dark:text-cream-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Navigation */}
@@ -85,8 +92,8 @@ export default function Layout() {
                 className={({ isActive }) =>
                   `flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-primary-600 hover:bg-cream-200'
+                      ? 'bg-primary-100 text-primary-700 dark:bg-primary-700 dark:text-accent-400'
+                      : 'text-primary-600 hover:bg-cream-200 dark:text-cream-200 dark:hover:bg-primary-700'
                   }`
                 }
               >
@@ -109,23 +116,23 @@ export default function Layout() {
           </nav>
 
           {/* User section */}
-          <div className="p-3 lg:p-4 border-t border-cream-300">
+          <div className="p-3 lg:p-4 border-t border-cream-300 dark:border-primary-700">
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center flex-shrink-0">
-                <span className="text-accent-600 font-medium">
+              <div className="w-10 h-10 rounded-full bg-accent-100 dark:bg-accent-500/20 flex items-center justify-center flex-shrink-0">
+                <span className="text-accent-600 dark:text-accent-400 font-medium">
                   {user?.display_name?.[0] || user?.email[0].toUpperCase()}
                 </span>
               </div>
               <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-primary-700 truncate">
+                <p className="text-sm font-medium text-primary-700 dark:text-cream-100 truncate">
                   {user?.display_name || user?.email}
                 </p>
-                <p className="text-xs text-primary-500 truncate">{user?.email}</p>
+                <p className="text-xs text-primary-500 dark:text-cream-300 truncate">{user?.email}</p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="mt-3 w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-primary-700 bg-cream-200 rounded-lg hover:bg-cream-300 transition-colors"
+              className="mt-3 w-full flex items-center justify-center px-3 py-2 text-sm font-medium text-primary-700 dark:text-cream-100 bg-cream-200 dark:bg-primary-700 rounded-lg hover:bg-cream-300 dark:hover:bg-primary-600 transition-colors"
             >
               <svg
                 className="w-4 h-4 mr-2"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/auth.store';
 import PasswordStrength from '../components/PasswordStrength';
+import ThemeToggle from '../components/ThemeToggle';
 
 type FamilyAction = 'create' | 'join';
 
@@ -35,21 +36,24 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-cream-100 dark:bg-primary-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="max-w-md w-full space-y-6 sm:space-y-8">
         <div>
           <div className="flex justify-center mb-4">
-            <div className="w-12 h-12 bg-primary-700 rounded-xl flex items-center justify-center">
-              <span className="text-accent-400 font-bold text-2xl">$</span>
+            <div className="w-12 h-12 bg-primary-700 dark:bg-accent-400 rounded-xl flex items-center justify-center">
+              <span className="text-accent-400 dark:text-primary-900 font-bold text-2xl">$</span>
             </div>
           </div>
-          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-700">
+          <h1 className="text-center text-2xl sm:text-3xl font-bold text-primary-700 dark:text-cream-100">
             Expenses Manager
           </h1>
-          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-primary-700">
+          <h2 className="mt-4 sm:mt-6 text-center text-xl sm:text-2xl font-bold text-primary-700 dark:text-cream-100">
             Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-primary-500">
+          <p className="mt-2 text-center text-sm text-primary-500 dark:text-cream-300">
             Already have an account?{' '}
             <Link
               to="/login"
@@ -62,8 +66,8 @@ export default function RegisterPage() {
 
         <form className="mt-6 sm:mt-8 space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-700">{error}</p>
+            <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+              <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
             </div>
           )}
 
@@ -116,10 +120,10 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="border-t border-cream-300 pt-4">
+            <div className="border-t border-cream-300 dark:border-primary-700 pt-4">
               <label className="label">Family</label>
               <div className="mt-2 space-y-2">
-                <label className="flex items-center p-3 border border-cream-300 rounded-lg cursor-pointer hover:bg-cream-50 transition-colors">
+                <label className="flex items-center p-3 border border-cream-300 dark:border-primary-600 rounded-lg cursor-pointer hover:bg-cream-50 dark:hover:bg-primary-800 transition-colors">
                   <input
                     type="radio"
                     name="familyAction"
@@ -129,13 +133,13 @@ export default function RegisterPage() {
                     className="h-4 w-4 text-accent-500 focus:ring-accent-400"
                   />
                   <div className="ml-3">
-                    <span className="text-sm font-medium text-primary-700">
+                    <span className="text-sm font-medium text-primary-700 dark:text-cream-100">
                       Create a new family
                     </span>
-                    <p className="text-xs text-primary-400">Start fresh and invite others</p>
+                    <p className="text-xs text-primary-400 dark:text-cream-400">Start fresh and invite others</p>
                   </div>
                 </label>
-                <label className="flex items-center p-3 border border-cream-300 rounded-lg cursor-pointer hover:bg-cream-50 transition-colors">
+                <label className="flex items-center p-3 border border-cream-300 dark:border-primary-600 rounded-lg cursor-pointer hover:bg-cream-50 dark:hover:bg-primary-800 transition-colors">
                   <input
                     type="radio"
                     name="familyAction"
@@ -145,10 +149,10 @@ export default function RegisterPage() {
                     className="h-4 w-4 text-accent-500 focus:ring-accent-400"
                   />
                   <div className="ml-3">
-                    <span className="text-sm font-medium text-primary-700">
+                    <span className="text-sm font-medium text-primary-700 dark:text-cream-100">
                       Join an existing family
                     </span>
-                    <p className="text-xs text-primary-400">Use an invite code</p>
+                    <p className="text-xs text-primary-400 dark:text-cream-400">Use an invite code</p>
                   </div>
                 </label>
               </div>
@@ -193,12 +197,12 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="btn-primary w-full py-3"
+            className="btn-accent w-full py-3"
           >
             {isLoading ? (
               <span className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="animate-spin -ml-1 mr-3 h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                 >

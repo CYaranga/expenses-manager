@@ -129,21 +129,21 @@ export default function FamilyPage() {
   if (!hasFamily) {
     return (
       <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Family Setup</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-primary-700 dark:text-cream-100">Family Setup</h1>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+            <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
           </div>
         )}
 
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {/* Create family card */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-primary-700 mb-2">
+            <h2 className="text-lg font-semibold text-primary-700 dark:text-cream-100 mb-2">
               Create a Family
             </h2>
-            <p className="text-primary-500 text-sm mb-4">
+            <p className="text-primary-500 dark:text-cream-300 text-sm mb-4">
               Start a new family and invite others to join.
             </p>
             {showCreateForm ? (
@@ -180,7 +180,7 @@ export default function FamilyPage() {
                   <button
                     type="submit"
                     disabled={createFamily.isPending}
-                    className="btn-primary flex-1"
+                    className="btn-accent flex-1"
                   >
                     {createFamily.isPending ? 'Creating...' : 'Create'}
                   </button>
@@ -189,7 +189,7 @@ export default function FamilyPage() {
             ) : (
               <button
                 onClick={() => setShowCreateForm(true)}
-                className="btn-primary w-full"
+                className="btn-accent w-full"
               >
                 Create Family
               </button>
@@ -198,10 +198,10 @@ export default function FamilyPage() {
 
           {/* Join family card */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-primary-700 mb-2">
+            <h2 className="text-lg font-semibold text-primary-700 dark:text-cream-100 mb-2">
               Join a Family
             </h2>
-            <p className="text-primary-500 text-sm mb-4">
+            <p className="text-primary-500 dark:text-cream-300 text-sm mb-4">
               Enter an invite code to join an existing family.
             </p>
             {showJoinForm ? (
@@ -229,7 +229,7 @@ export default function FamilyPage() {
                   <button
                     type="submit"
                     disabled={joinFamily.isPending}
-                    className="btn-primary flex-1"
+                    className="btn-accent flex-1"
                   >
                     {joinFamily.isPending ? 'Joining...' : 'Join'}
                   </button>
@@ -238,7 +238,7 @@ export default function FamilyPage() {
             ) : (
               <button
                 onClick={() => setShowJoinForm(true)}
-                className="btn-primary w-full"
+                className="btn-accent w-full"
               >
                 Join Family
               </button>
@@ -252,7 +252,7 @@ export default function FamilyPage() {
   if (familyLoading || membersLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 dark:border-accent-400"></div>
       </div>
     );
   }
@@ -260,7 +260,7 @@ export default function FamilyPage() {
   if (familyError) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-600">Failed to load family data.</p>
+        <p className="text-red-600 dark:text-red-400">Failed to load family data.</p>
       </div>
     );
   }
@@ -271,7 +271,7 @@ export default function FamilyPage() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-xl sm:text-2xl font-bold text-primary-700">Family</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-primary-700 dark:text-cream-100">Family</h1>
         {isAdmin && (
           <button
             onClick={() => {
@@ -287,16 +287,16 @@ export default function FamilyPage() {
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4">
-          <p className="text-sm text-red-700">{error}</p>
+        <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+          <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
         </div>
       )}
 
       {/* Edit form modal */}
       {showEditForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">Edit Family</h2>
+          <div className="bg-white dark:bg-primary-800 rounded-xl p-6 w-full max-w-md">
+            <h2 className="text-lg font-semibold text-primary-700 dark:text-cream-100 mb-4">Edit Family</h2>
             <form onSubmit={handleUpdateFamily} className="space-y-4">
               <div>
                 <label className="label">Name</label>
@@ -328,7 +328,7 @@ export default function FamilyPage() {
                 <button
                   type="submit"
                   disabled={updateFamily.isPending}
-                  className="btn-primary flex-1"
+                  className="btn-accent flex-1"
                 >
                   {updateFamily.isPending ? 'Saving...' : 'Save'}
                 </button>
@@ -340,17 +340,17 @@ export default function FamilyPage() {
 
       {/* Family info */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-primary-700 mb-2">
+        <h2 className="text-lg font-semibold text-primary-700 dark:text-cream-100 mb-2">
           {family?.name}
         </h2>
         {family?.description && (
-          <p className="text-primary-500 mb-4">{family.description}</p>
+          <p className="text-primary-500 dark:text-cream-300 mb-4">{family.description}</p>
         )}
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-cream-100 rounded-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 p-4 bg-cream-100 dark:bg-primary-900 rounded-lg">
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-sm text-primary-500">Invite Code</p>
-            <p className="font-mono text-xl sm:text-2xl font-bold tracking-wider text-primary-700">
+            <p className="text-sm text-primary-500 dark:text-cream-300">Invite Code</p>
+            <p className="font-mono text-xl sm:text-2xl font-bold tracking-wider text-primary-700 dark:text-accent-400">
               {family?.invite_code}
             </p>
           </div>
@@ -373,36 +373,36 @@ export default function FamilyPage() {
 
       {/* Members */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-primary-700 mb-4">
+        <h2 className="text-lg font-semibold text-primary-700 dark:text-cream-100 mb-4">
           Members ({members.length})
         </h2>
-        <div className="divide-y divide-cream-200 -mx-4 sm:-mx-6 px-4 sm:px-6">
+        <div className="divide-y divide-cream-200 dark:divide-primary-700 -mx-4 sm:-mx-6 px-4 sm:px-6">
           {members.map((member) => (
             <div
               key={member.id}
               className="py-4 flex items-center justify-between gap-3"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center flex-shrink-0">
-                  <span className="text-accent-600 font-medium">
+                <div className="w-10 h-10 rounded-full bg-accent-100 dark:bg-accent-500/20 flex items-center justify-center flex-shrink-0">
+                  <span className="text-accent-600 dark:text-accent-400 font-medium">
                     {member.display_name?.[0] || member.email[0].toUpperCase()}
                   </span>
                 </div>
                 <div className="min-w-0">
-                  <p className="font-medium text-primary-700 truncate">
+                  <p className="font-medium text-primary-700 dark:text-cream-100 truncate">
                     {member.display_name || member.email.split('@')[0]}
                     {member.id === user?.id && (
-                      <span className="text-primary-400 text-sm ml-1">(you)</span>
+                      <span className="text-primary-400 dark:text-cream-400 text-sm ml-1">(you)</span>
                     )}
                   </p>
-                  <p className="text-sm text-primary-500 truncate">{member.email}</p>
+                  <p className="text-sm text-primary-500 dark:text-cream-300 truncate">{member.email}</p>
                 </div>
               </div>
               <span
                 className={`px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
                   member.role === 'admin'
-                    ? 'bg-accent-100 text-accent-700'
-                    : 'bg-cream-200 text-primary-600'
+                    ? 'bg-accent-100 dark:bg-accent-500/20 text-accent-700 dark:text-accent-400'
+                    : 'bg-cream-200 dark:bg-primary-700 text-primary-600 dark:text-cream-200'
                 }`}
               >
                 {member.role}
@@ -413,9 +413,9 @@ export default function FamilyPage() {
       </div>
 
       {/* Leave family */}
-      <div className="card border-red-200">
-        <h2 className="text-lg font-semibold text-red-600 mb-2">Danger Zone</h2>
-        <p className="text-primary-500 text-sm mb-4">
+      <div className="card border-red-200 dark:border-red-900">
+        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">Danger Zone</h2>
+        <p className="text-primary-500 dark:text-cream-300 text-sm mb-4">
           {isAdmin
             ? 'As the admin, leaving will delete the family if you are the only member.'
             : 'Leave this family to join or create another one.'}

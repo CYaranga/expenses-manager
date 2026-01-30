@@ -9,14 +9,28 @@ import { errorHandler } from './middleware/error';
 
 // SPA HTML template - served for all non-API, non-asset routes
 const spaHtml = `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/expenses-manager/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expenses Manager</title>
-    <script type="module" crossorigin src="/expenses-manager/assets/index-BAomm_K5.js"></script>
-    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-BgUI0pZj.css">
+    <script>
+      // Prevent flash of wrong theme
+      (function() {
+        try {
+          const stored = localStorage.getItem('theme-storage');
+          if (stored) {
+            const { state } = JSON.parse(stored);
+            if (state.theme === 'light') {
+              document.documentElement.classList.remove('dark');
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/expenses-manager/assets/index-DZDeMAMR.js"></script>
+    <link rel="stylesheet" crossorigin href="/expenses-manager/assets/index-D8ZtzgNG.css">
   </head>
   <body>
     <div id="root"></div>

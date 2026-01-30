@@ -20,8 +20,8 @@ function calculatePasswordStrength(password: string): StrengthResult {
     return {
       score: 0,
       label: '',
-      color: 'text-primary-400',
-      bgColor: 'bg-cream-300',
+      color: 'text-primary-400 dark:text-cream-400',
+      bgColor: 'bg-cream-300 dark:bg-primary-700',
       suggestions: [],
     };
   }
@@ -62,11 +62,11 @@ function calculatePasswordStrength(password: string): StrengthResult {
   const normalizedScore = Math.max(0, Math.min(4, Math.round(score / 2)));
 
   const levels: { label: string; color: string; bgColor: string }[] = [
-    { label: 'Very weak', color: 'text-red-600', bgColor: 'bg-red-500' },
-    { label: 'Weak', color: 'text-orange-600', bgColor: 'bg-orange-500' },
+    { label: 'Very weak', color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-500' },
+    { label: 'Weak', color: 'text-orange-600 dark:text-orange-400', bgColor: 'bg-orange-500' },
     { label: 'Fair', color: 'text-accent-500', bgColor: 'bg-accent-400' },
-    { label: 'Good', color: 'text-primary-500', bgColor: 'bg-primary-500' },
-    { label: 'Strong', color: 'text-green-600', bgColor: 'bg-green-500' },
+    { label: 'Good', color: 'text-primary-500 dark:text-primary-300', bgColor: 'bg-primary-500' },
+    { label: 'Strong', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-500' },
   ];
 
   return {
@@ -93,7 +93,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
           <div
             key={level}
             className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${
-              level <= strength.score ? strength.bgColor : 'bg-cream-300'
+              level <= strength.score ? strength.bgColor : 'bg-cream-300 dark:bg-primary-700'
             }`}
           />
         ))}
@@ -105,7 +105,7 @@ export default function PasswordStrength({ password }: PasswordStrengthProps) {
           {strength.label}
         </span>
         {strength.suggestions.length > 0 && (
-          <span className="text-xs text-primary-400">
+          <span className="text-xs text-primary-400 dark:text-cream-400">
             {strength.suggestions[0]}
           </span>
         )}

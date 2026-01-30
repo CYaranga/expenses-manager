@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ThemeToggle from '../components/ThemeToggle';
 
 const features = [
   {
@@ -35,21 +36,22 @@ const features = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cream-100 to-cream-200">
+    <div className="min-h-screen bg-gradient-to-b from-cream-100 to-cream-200 dark:from-primary-900 dark:to-primary-800">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream-100/80 backdrop-blur-md border-b border-cream-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-cream-100/80 dark:bg-primary-900/80 backdrop-blur-md border-b border-cream-300 dark:border-primary-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-accent-400 font-bold text-lg">$</span>
+              <div className="w-8 h-8 bg-primary-700 dark:bg-accent-400 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 dark:text-primary-900 font-bold text-lg">$</span>
               </div>
-              <span className="ml-2 text-xl font-bold text-primary-700">Expenses Manager</span>
+              <span className="ml-2 text-xl font-bold text-primary-700 dark:text-cream-100">Expenses Manager</span>
             </div>
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <Link
                 to="/login"
-                className="text-primary-600 hover:text-primary-700 font-medium px-3 py-2 rounded-lg hover:bg-cream-200 transition-colors"
+                className="text-primary-600 dark:text-cream-200 hover:text-primary-700 dark:hover:text-cream-100 font-medium px-3 py-2 rounded-lg hover:bg-cream-200 dark:hover:bg-primary-800 transition-colors"
               >
                 Sign in
               </Link>
@@ -67,11 +69,11 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="pt-32 pb-16 sm:pt-40 sm:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-700 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-700 dark:text-cream-100 leading-tight">
             Track Family Expenses
-            <span className="block text-primary-500">Together, Effortlessly</span>
+            <span className="block text-primary-500 dark:text-accent-400">Together, Effortlessly</span>
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-primary-600 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg sm:text-xl text-primary-600 dark:text-cream-200 max-w-2xl mx-auto">
             A simple, beautiful way to manage your family's finances. Add expenses,
             see where your money goes, and make smarter spending decisions together.
           </p>
@@ -87,7 +89,7 @@ export default function HomePage() {
             </Link>
             <a
               href="#features"
-              className="inline-flex items-center justify-center bg-white text-primary-700 font-semibold px-8 py-4 rounded-xl hover:bg-cream-50 transition-colors text-lg border border-cream-300"
+              className="inline-flex items-center justify-center bg-white dark:bg-primary-800 text-primary-700 dark:text-cream-100 font-semibold px-8 py-4 rounded-xl hover:bg-cream-50 dark:hover:bg-primary-700 transition-colors text-lg border border-cream-300 dark:border-primary-600"
             >
               Learn More
             </a>
@@ -98,29 +100,29 @@ export default function HomePage() {
       {/* App Preview */}
       <section className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-2xl shadow-primary-700/10 border border-cream-300 overflow-hidden">
+          <div className="bg-white dark:bg-primary-800 rounded-2xl shadow-2xl shadow-primary-700/10 dark:shadow-black/30 border border-cream-300 dark:border-primary-700 overflow-hidden">
             <div className="bg-primary-700 px-4 py-3 flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-400"></div>
               <div className="w-3 h-3 rounded-full bg-accent-400"></div>
               <div className="w-3 h-3 rounded-full bg-green-400"></div>
             </div>
-            <div className="p-6 sm:p-8 bg-cream-100">
+            <div className="p-6 sm:p-8 bg-cream-100 dark:bg-primary-900">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
-                  <p className="text-sm text-primary-500">Total Expenses</p>
-                  <p className="text-2xl font-bold text-primary-700">$4,285.50</p>
+                <div className="bg-white dark:bg-primary-800 p-4 rounded-xl shadow-sm border border-cream-200 dark:border-primary-700">
+                  <p className="text-sm text-primary-500 dark:text-cream-300">Total Expenses</p>
+                  <p className="text-2xl font-bold text-primary-700 dark:text-cream-100">$4,285.50</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
-                  <p className="text-sm text-primary-500">This Month</p>
-                  <p className="text-2xl font-bold text-primary-700">$1,234.00</p>
+                <div className="bg-white dark:bg-primary-800 p-4 rounded-xl shadow-sm border border-cream-200 dark:border-primary-700">
+                  <p className="text-sm text-primary-500 dark:text-cream-300">This Month</p>
+                  <p className="text-2xl font-bold text-primary-700 dark:text-cream-100">$1,234.00</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200">
-                  <p className="text-sm text-primary-500">Top Category</p>
-                  <p className="text-2xl font-bold text-primary-700">Groceries</p>
+                <div className="bg-white dark:bg-primary-800 p-4 rounded-xl shadow-sm border border-cream-200 dark:border-primary-700">
+                  <p className="text-sm text-primary-500 dark:text-cream-300">Top Category</p>
+                  <p className="text-2xl font-bold text-primary-700 dark:text-cream-100">Groceries</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200 h-40 flex items-center justify-center">
+                <div className="bg-white dark:bg-primary-800 p-4 rounded-xl shadow-sm border border-cream-200 dark:border-primary-700 h-40 flex items-center justify-center">
                   <div className="flex gap-1 items-end h-24">
                     {[40, 65, 45, 80, 55, 70, 90].map((h, i) => (
                       <div
@@ -134,7 +136,7 @@ export default function HomePage() {
                     ))}
                   </div>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-cream-200 h-40 flex items-center justify-center">
+                <div className="bg-white dark:bg-primary-800 p-4 rounded-xl shadow-sm border border-cream-200 dark:border-primary-700 h-40 flex items-center justify-center">
                   <div
                     className="w-24 h-24 rounded-full border-8"
                     style={{
@@ -155,10 +157,10 @@ export default function HomePage() {
       <section id="features" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700 dark:text-cream-100">
               Everything you need to manage expenses
             </h2>
-            <p className="mt-4 text-lg text-primary-500 max-w-2xl mx-auto">
+            <p className="mt-4 text-lg text-primary-500 dark:text-cream-300 max-w-2xl mx-auto">
               Simple yet powerful features designed for families who want to take control of their finances.
             </p>
           </div>
@@ -167,11 +169,11 @@ export default function HomePage() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-2xl border border-cream-300 hover:border-accent-400 hover:shadow-lg transition-all duration-300"
+                className="bg-white dark:bg-primary-800 p-6 rounded-2xl border border-cream-300 dark:border-primary-700 hover:border-accent-400 dark:hover:border-accent-400 hover:shadow-lg transition-all duration-300"
               >
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-700 rounded-xl flex items-center justify-center mb-4">
                   <svg
-                    className="w-6 h-6 text-primary-700"
+                    className="w-6 h-6 text-primary-700 dark:text-accent-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -184,10 +186,10 @@ export default function HomePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-primary-700 mb-2">
+                <h3 className="text-xl font-semibold text-primary-700 dark:text-cream-100 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-primary-500">{feature.description}</p>
+                <p className="text-primary-500 dark:text-cream-300">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -195,13 +197,13 @@ export default function HomePage() {
       </section>
 
       {/* How it Works */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-primary-800">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700">
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary-700 dark:text-cream-100">
               Get started in minutes
             </h2>
-            <p className="mt-4 text-lg text-primary-500">
+            <p className="mt-4 text-lg text-primary-500 dark:text-cream-300">
               Three simple steps to take control of your family finances
             </p>
           </div>
@@ -228,10 +230,10 @@ export default function HomePage() {
                 <div className="w-16 h-16 bg-accent-400 text-primary-800 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-semibold text-primary-700 mb-2">
+                <h3 className="text-xl font-semibold text-primary-700 dark:text-cream-100 mb-2">
                   {item.title}
                 </h3>
-                <p className="text-primary-500">{item.description}</p>
+                <p className="text-primary-500 dark:text-cream-300">{item.description}</p>
               </div>
             ))}
           </div>
@@ -241,10 +243,10 @@ export default function HomePage() {
       {/* Tech Stack */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-primary-700 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary-700 dark:text-cream-100 mb-4">
             Built with modern technology
           </h2>
-          <p className="text-primary-500 mb-8">
+          <p className="text-primary-500 dark:text-cream-300 mb-8">
             Powered by cutting-edge tools for the best performance and developer experience
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -252,7 +254,7 @@ export default function HomePage() {
               (tech) => (
                 <span
                   key={tech}
-                  className="px-4 py-2 bg-white text-primary-600 rounded-full text-sm font-medium border border-cream-300"
+                  className="px-4 py-2 bg-white dark:bg-primary-800 text-primary-600 dark:text-cream-200 rounded-full text-sm font-medium border border-cream-300 dark:border-primary-600"
                 >
                   {tech}
                 </span>
@@ -283,16 +285,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-cream-300 bg-white">
+      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-cream-300 dark:border-primary-700 bg-white dark:bg-primary-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-primary-700 rounded-lg flex items-center justify-center">
-                <span className="text-accent-400 font-bold text-lg">$</span>
+              <div className="w-8 h-8 bg-primary-700 dark:bg-accent-400 rounded-lg flex items-center justify-center">
+                <span className="text-accent-400 dark:text-primary-900 font-bold text-lg">$</span>
               </div>
-              <span className="ml-2 text-lg font-bold text-primary-700">Expenses Manager</span>
+              <span className="ml-2 text-lg font-bold text-primary-700 dark:text-cream-100">Expenses Manager</span>
             </div>
-            <p className="text-primary-500 text-sm">
+            <p className="text-primary-500 dark:text-cream-300 text-sm">
               Built by Chris Yaranga. Open source on{' '}
               <a
                 href="https://github.com/CYaranga/expenses-manager"

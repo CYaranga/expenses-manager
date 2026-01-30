@@ -86,7 +86,7 @@ export default function AddExpensePage() {
   if (isEditing && expenseLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 dark:border-accent-400"></div>
       </div>
     );
   }
@@ -96,7 +96,7 @@ export default function AddExpensePage() {
       {/* Back button for mobile */}
       <button
         onClick={() => navigate('/expenses')}
-        className="sm:hidden flex items-center text-primary-500 mb-4 -ml-1"
+        className="sm:hidden flex items-center text-primary-500 dark:text-cream-300 mb-4 -ml-1"
       >
         <svg className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -104,14 +104,14 @@ export default function AddExpensePage() {
         Back
       </button>
 
-      <h1 className="text-xl sm:text-2xl font-bold text-primary-700 mb-4 sm:mb-6">
+      <h1 className="text-xl sm:text-2xl font-bold text-primary-700 dark:text-cream-100 mb-4 sm:mb-6">
         {isEditing ? 'Edit Expense' : 'Add New Expense'}
       </h1>
 
       <form onSubmit={handleSubmit} className="card space-y-4 sm:space-y-6">
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
+            <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
           </div>
         )}
 
@@ -137,7 +137,7 @@ export default function AddExpensePage() {
               Amount *
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary-400 dark:text-cream-400">
                 $
               </span>
               <input
@@ -219,7 +219,7 @@ export default function AddExpensePage() {
           <button
             type="submit"
             disabled={createExpense.isPending || updateExpense.isPending}
-            className="btn-primary flex-1"
+            className="btn-accent flex-1"
           >
             {createExpense.isPending || updateExpense.isPending
               ? 'Saving...'

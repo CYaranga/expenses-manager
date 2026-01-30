@@ -4,6 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import './index.css';
+import { initializeTheme } from './store/theme.store';
+
+// Initialize theme before render to prevent flash
+initializeTheme();
 
 const queryClient = new QueryClient({
   defaultOptions: {
