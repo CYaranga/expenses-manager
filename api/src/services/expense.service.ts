@@ -1,12 +1,14 @@
 import type {
   Expense,
   ExpenseWithUser,
-  ExpenseSummary,
   CreateExpenseRequest,
   UpdateExpenseRequest,
   ExpenseFilters,
-  DEFAULT_CATEGORIES,
+  DailyTotal,
+  PeriodSummary,
+  TransactionType,
 } from '../../../shared/src';
+import { DEFAULT_CATEGORIES, DEFAULT_INCOME_CATEGORIES } from '../../../shared/src';
 import { generateId, getCurrentTimestamp } from '../utils';
 
 export class ExpenseService {
@@ -15,11 +17,12 @@ export class ExpenseService {
   async create(userId: string, familyId: string, data: CreateExpenseRequest): Promise<Expense> {
     const id = generateId();
     const timestamp = getCurrentTimestamp();
+    const type = data.type || 'expense';
 
     await this.db
       .prepare(
-        `INSERT INTO expenses (id, family_id, user_id, amount, name, category, place, photo, purchase_date, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO expenses (id, family_id, user_id, amount, name, category, type, place, photo, purchase_date, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
       .bind(
         id,
@@ -28,6 +31,7 @@ export class ExpenseService {
         data.amount,
         data.name,
         data.category,
+        type,
         data.place || null,
         data.photo || null,
         data.purchase_date,
@@ -67,6 +71,11 @@ export class ExpenseService {
     if (filters.category) {
       conditions.push('e.category = ?');
       params.push(filters.category);
+    }
+
+    if (filters.type) {
+      conditions.push('e.type = ?');
+      params.push(filters.type);
     }
 
     if (filters.user_id) {
@@ -129,6 +138,10 @@ export class ExpenseService {
       updates.push('category = ?');
       values.push(data.category);
     }
+    if (data.type !== undefined) {
+      updates.push('type = ?');
+      values.push(data.type);
+    }
     if (data.place !== undefined) {
       updates.push('place = ?');
       values.push(data.place);
@@ -174,93 +187,66 @@ export class ExpenseService {
     }
   }
 
-  async getSummary(familyId: string, startDate?: string, endDate?: string): Promise<ExpenseSummary> {
-    const dateCondition = startDate && endDate
-      ? 'AND purchase_date BETWEEN ? AND ?'
-      : startDate
-        ? 'AND purchase_date >= ?'
-        : endDate
-          ? 'AND purchase_date <= ?'
-          : '';
+  async getDailyTotals(familyId: string, year: number): Promise<DailyTotal[]> {
+    const startDate = `${year}-01-01`;
+    const endDate = `${year}-12-31`;
 
-    const dateParams = startDate && endDate
-      ? [startDate, endDate]
-      : startDate
-        ? [startDate]
-        : endDate
-          ? [endDate]
-          : [];
-
-    // Total amount and count
-    const totals = await this.db
+    const result = await this.db
       .prepare(
-        `SELECT COALESCE(SUM(amount), 0) as total_amount, COUNT(*) as expense_count
-         FROM expenses WHERE family_id = ? ${dateCondition}`
-      )
-      .bind(familyId, ...dateParams)
-      .first<{ total_amount: number; expense_count: number }>();
-
-    // Category breakdown
-    const categoryResult = await this.db
-      .prepare(
-        `SELECT category, SUM(amount) as total, COUNT(*) as count
-         FROM expenses WHERE family_id = ? ${dateCondition}
-         GROUP BY category
-         ORDER BY total DESC`
-      )
-      .bind(familyId, ...dateParams)
-      .all<{ category: string; total: number; count: number }>();
-
-    // Monthly totals (last 12 months)
-    const monthlyResult = await this.db
-      .prepare(
-        `SELECT strftime('%Y-%m', purchase_date) as month, SUM(amount) as total
+        `SELECT purchase_date as date,
+                SUM(CASE WHEN type = 'income' THEN -amount ELSE amount END) as total
          FROM expenses
-         WHERE family_id = ? AND purchase_date >= date('now', '-12 months')
-         GROUP BY month
-         ORDER BY month ASC`
+         WHERE family_id = ? AND purchase_date BETWEEN ? AND ?
+         GROUP BY purchase_date`
       )
-      .bind(familyId)
-      .all<{ month: string; total: number }>();
+      .bind(familyId, startDate, endDate)
+      .all<DailyTotal>();
 
-    // Recent expenses
-    const recentResult = await this.db
+    return result.results;
+  }
+
+  async getSummary(familyId: string, startDate: string, endDate: string): Promise<PeriodSummary> {
+    const totalsResult = await this.db
       .prepare(
-        `SELECT e.*, u.display_name as user_display_name, u.email as user_email
-         FROM expenses e
-         JOIN users u ON e.user_id = u.id
-         WHERE e.family_id = ?
-         ORDER BY e.purchase_date DESC, e.created_at DESC
-         LIMIT 5`
+        `SELECT
+           COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) as total_expenses,
+           COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END), 0) as total_income,
+           COUNT(*) as transaction_count
+         FROM expenses
+         WHERE family_id = ? AND purchase_date BETWEEN ? AND ?`
       )
-      .bind(familyId)
-      .all<ExpenseWithUser>();
+      .bind(familyId, startDate, endDate)
+      .first<{ total_expenses: number; total_income: number; transaction_count: number }>();
+
+    const topCategoryResult = await this.db
+      .prepare(
+        `SELECT category, SUM(amount) as cat_total
+         FROM expenses
+         WHERE family_id = ? AND type = 'expense' AND purchase_date BETWEEN ? AND ?
+         GROUP BY category
+         ORDER BY cat_total DESC
+         LIMIT 1`
+      )
+      .bind(familyId, startDate, endDate)
+      .first<{ category: string; cat_total: number }>();
+
+    const totalExpenses = totalsResult?.total_expenses || 0;
+    const totalIncome = totalsResult?.total_income || 0;
 
     return {
-      total_amount: totals?.total_amount || 0,
-      expense_count: totals?.expense_count || 0,
-      category_breakdown: categoryResult.results,
-      monthly_totals: monthlyResult.results,
-      recent_expenses: recentResult.results,
+      total_expenses: totalExpenses,
+      total_income: totalIncome,
+      net_balance: totalIncome - totalExpenses,
+      top_category: topCategoryResult?.category || null,
+      top_category_amount: topCategoryResult?.cat_total || 0,
+      transaction_count: totalsResult?.transaction_count || 0,
     };
   }
 
-  async getCategories(): Promise<string[]> {
-    // Return default categories
-    return [
-      'Food & Groceries',
-      'Transportation',
-      'Utilities',
-      'Entertainment',
-      'Shopping',
-      'Healthcare',
-      'Education',
-      'Housing',
-      'Insurance',
-      'Personal Care',
-      'Gifts & Donations',
-      'Travel',
-      'Other',
-    ];
+  async getCategories(type?: TransactionType): Promise<string[]> {
+    if (type === 'income') {
+      return [...DEFAULT_INCOME_CATEGORIES];
+    }
+    return [...DEFAULT_CATEGORIES];
   }
 }

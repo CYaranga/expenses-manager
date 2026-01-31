@@ -4,10 +4,13 @@ import type { HonoEnv } from '../types';
 import { ExpenseService } from '../services/expense.service';
 import { authMiddleware, requireFamily } from '../middleware/auth';
 
+const transactionTypeSchema = z.enum(['expense', 'income']);
+
 const createExpenseSchema = z.object({
   amount: z.number().positive(),
   name: z.string().min(1).max(200),
   category: z.string().min(1),
+  type: transactionTypeSchema.optional().default('expense'),
   place: z.string().max(200).optional(),
   photo: z.string().url().optional(),
   purchase_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -17,6 +20,7 @@ const updateExpenseSchema = z.object({
   amount: z.number().positive().optional(),
   name: z.string().min(1).max(200).optional(),
   category: z.string().min(1).optional(),
+  type: transactionTypeSchema.optional(),
   place: z.string().max(200).optional().nullable(),
   photo: z.string().url().optional().nullable(),
   purchase_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
@@ -34,6 +38,7 @@ expenseRoutes.get('/', async (c) => {
 
     const filters = {
       category: query.category,
+      type: query.type as 'expense' | 'income' | undefined,
       user_id: query.user_id,
       start_date: query.start_date,
       end_date: query.end_date,
@@ -70,17 +75,37 @@ expenseRoutes.post('/', async (c) => {
   }
 });
 
+expenseRoutes.get('/daily-totals', async (c) => {
+  try {
+    const user = c.get('user');
+    const year = parseInt(c.req.query('year') || String(new Date().getFullYear()), 10);
+
+    if (isNaN(year) || year < 2000 || year > 2100) {
+      return c.json({ success: false, error: 'Invalid year' }, 400);
+    }
+
+    const expenseService = new ExpenseService(c.env.DB);
+    const dailyTotals = await expenseService.getDailyTotals(user.family_id!, year);
+
+    return c.json({ success: true, data: { dailyTotals } });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to get daily totals';
+    return c.json({ success: false, error: message }, 400);
+  }
+});
+
 expenseRoutes.get('/summary', async (c) => {
   try {
     const user = c.get('user');
-    const query = c.req.query();
+    const startDate = c.req.query('start_date');
+    const endDate = c.req.query('end_date');
+
+    if (!startDate || !endDate) {
+      return c.json({ success: false, error: 'start_date and end_date are required' }, 400);
+    }
 
     const expenseService = new ExpenseService(c.env.DB);
-    const summary = await expenseService.getSummary(
-      user.family_id!,
-      query.start_date,
-      query.end_date
-    );
+    const summary = await expenseService.getSummary(user.family_id!, startDate, endDate);
 
     return c.json({ success: true, data: { summary } });
   } catch (error) {
@@ -91,8 +116,9 @@ expenseRoutes.get('/summary', async (c) => {
 
 expenseRoutes.get('/categories', async (c) => {
   try {
+    const type = c.req.query('type') as 'expense' | 'income' | undefined;
     const expenseService = new ExpenseService(c.env.DB);
-    const categories = await expenseService.getCategories();
+    const categories = await expenseService.getCategories(type);
 
     return c.json({ success: true, data: { categories } });
   } catch (error) {
