@@ -6,15 +6,17 @@ import type {
   FamilyMember,
   Expense,
   ExpenseWithUser,
-  ExpenseSummary,
-  RegisterRequest,
-  LoginRequest,
+  DailyTotal,
+  PeriodSummary,
   CreateFamilyRequest,
   UpdateFamilyRequest,
   CreateExpenseRequest,
   UpdateExpenseRequest,
   ExpenseFilters,
+  TransactionType,
+  HttpMethod,
 } from '../../../shared/src';
+import { apiLogger, performanceMonitor } from './logger';
 
 const API_BASE = '/expenses-manager/api';
 
@@ -48,6 +50,19 @@ async function request<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
+  const method = (options.method || 'GET') as HttpMethod;
+  const startTime = performance.now();
+  let requestBody: unknown;
+
+  try {
+    requestBody = options.body ? JSON.parse(options.body as string) : undefined;
+  } catch {
+    requestBody = options.body;
+  }
+
+  // Log request
+  apiLogger.logRequest(method, endpoint, requestBody);
+
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...((options.headers as Record<string, string>) || {}),
@@ -57,33 +72,54 @@ async function request<T>(
     headers['Authorization'] = `Bearer ${accessToken}`;
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      headers,
+    });
 
-  const data = (await response.json()) as ApiResponse<T>;
+    const data = (await response.json()) as ApiResponse<T>;
+    const duration = performance.now() - startTime;
 
-  if (!response.ok || !data.success) {
-    // Try to refresh token if unauthorized
-    if (response.status === 401 && refreshToken && endpoint !== '/auth/refresh') {
-      const refreshed = await tryRefreshToken();
-      if (refreshed) {
-        headers['Authorization'] = `Bearer ${accessToken}`;
-        const retryResponse = await fetch(`${API_BASE}${endpoint}`, {
-          ...options,
-          headers,
-        });
-        const retryData = (await retryResponse.json()) as ApiResponse<T>;
-        if (retryResponse.ok && retryData.success) {
-          return retryData.data as T;
+    // Log response
+    apiLogger.logResponse(method, endpoint, response.status, data, duration);
+
+    if (!response.ok || !data.success) {
+      // Try to refresh token if unauthorized
+      if (response.status === 401 && refreshToken && endpoint !== '/auth/refresh') {
+        const refreshed = await tryRefreshToken();
+        if (refreshed) {
+          headers['Authorization'] = `Bearer ${accessToken}`;
+          const retryResponse = await fetch(`${API_BASE}${endpoint}`, {
+            ...options,
+            headers,
+          });
+          const retryData = (await retryResponse.json()) as ApiResponse<T>;
+          const retryDuration = performance.now() - startTime;
+
+          apiLogger.logResponse(method, endpoint, retryResponse.status, retryData, retryDuration, {
+            retry: true,
+          });
+
+          if (retryResponse.ok && retryData.success) {
+            return retryData.data as T;
+          }
         }
       }
-    }
-    throw new Error(data.error || 'Request failed');
-  }
 
-  return data.data as T;
+      apiLogger.logApiError(method, endpoint, data.error || 'Request failed', duration);
+      throw new Error(data.error || 'Request failed');
+    }
+
+    // Log API response time
+    performanceMonitor.logApiResponseTime(endpoint, method, duration, response.status);
+
+    return data.data as T;
+  } catch (error) {
+    const duration = performance.now() - startTime;
+    apiLogger.logApiError(method, endpoint, error, duration);
+    throw error;
+  }
 }
 
 async function tryRefreshToken(): Promise<boolean> {
@@ -112,16 +148,10 @@ async function tryRefreshToken(): Promise<boolean> {
 
 // Auth API
 export const authApi = {
-  register: (data: RegisterRequest) =>
-    request<{ user: UserPublic; tokens: AuthTokens }>('/auth/register', {
+  googleSignIn: (credential: string) =>
+    request<{ user: UserPublic; tokens: AuthTokens }>('/auth/google', {
       method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  login: (data: LoginRequest) =>
-    request<{ user: UserPublic; tokens: AuthTokens }>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({ credential }),
     }),
 
   logout: () =>
@@ -173,6 +203,7 @@ export const expenseApi = {
   list: (filters?: ExpenseFilters) => {
     const params = new URLSearchParams();
     if (filters?.category) params.set('category', filters.category);
+    if (filters?.type) params.set('type', filters.type);
     if (filters?.user_id) params.set('user_id', filters.user_id);
     if (filters?.start_date) params.set('start_date', filters.start_date);
     if (filters?.end_date) params.set('end_date', filters.end_date);
@@ -207,16 +238,14 @@ export const expenseApi = {
       method: 'DELETE',
     }),
 
-  getSummary: (startDate?: string, endDate?: string) => {
-    const params = new URLSearchParams();
-    if (startDate) params.set('start_date', startDate);
-    if (endDate) params.set('end_date', endDate);
-
-    const query = params.toString();
-    return request<{ summary: ExpenseSummary }>(
-      `/expenses/summary${query ? `?${query}` : ''}`
-    );
+  getCategories: (type?: TransactionType) => {
+    const params = type ? `?type=${type}` : '';
+    return request<{ categories: string[] }>(`/expenses/categories${params}`);
   },
 
-  getCategories: () => request<{ categories: string[] }>('/expenses/categories'),
+  getDailyTotals: (year: number) =>
+    request<{ dailyTotals: DailyTotal[] }>(`/expenses/daily-totals?year=${year}`),
+
+  getSummary: (startDate: string, endDate: string) =>
+    request<{ summary: PeriodSummary }>(`/expenses/summary?start_date=${startDate}&end_date=${endDate}`),
 };
