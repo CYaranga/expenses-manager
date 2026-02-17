@@ -29,6 +29,7 @@
 
   // Environment variables (secrets should be set via wrangler secret)
   "vars": {
-    "ENVIRONMENT": "production"
+    "ENVIRONMENT": "production",
+    "GOOGLE_CLIENT_ID": "855939141947-vjgf9e1srlmfgf8d9fe8m7n5kiiiu4aj.apps.googleusercontent.com"
   }
 }
