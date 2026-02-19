@@ -4,6 +4,10 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Fraunces', 'Georgia', 'serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
       colors: {
         primary: {
           50: '#f0f4f8',
