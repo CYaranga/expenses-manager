@@ -13,11 +13,11 @@ import {
 
 type Period = 'week' | 'month' | 'year' | 'custom';
 
-const PERIODS: { key: Period; labelKey: string }[] = [
-  { key: 'week',   labelKey: 'thisWeek'   },
-  { key: 'month',  labelKey: 'thisMonth'  },
-  { key: 'year',   labelKey: 'thisYear'   },
-  { key: 'custom', labelKey: 'custom'     },
+const PERIODS = [
+  { key: 'week' as Period,   labelKey: 'thisWeek' as const   },
+  { key: 'month' as Period,  labelKey: 'thisMonth' as const  },
+  { key: 'year' as Period,   labelKey: 'thisYear' as const   },
+  { key: 'custom' as Period, labelKey: 'custom' as const     },
 ];
 
 export default function DashboardSummary() {
